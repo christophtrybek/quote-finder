@@ -10,7 +10,17 @@
      integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 </head>
 <body>
-        
+    <div class="container">
+        <h1>Quote Finder</h1>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Movie Title" aria-label="Movie Title"
+                aria-describedby="button-addon2">
+            <div class="input-group-append">
+                <button class="btn btn-secondary" type="button" id="button-addon2" onclick="search()">Find</button>
+            </div>
+        </div> 
+    </div>
+    
     <!-- import used scripts-->
     <script src="quote-finder.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
