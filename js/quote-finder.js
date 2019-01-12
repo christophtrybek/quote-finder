@@ -1,4 +1,11 @@
 /**
+ * Global data source
+ */
+let movieData = [];
+let castData = [];
+let quotesData = [];
+
+/**
  * Handle document input
  */
 $(document).ready(() => {
@@ -19,7 +26,7 @@ function search(searchTerm){
     axios.get('https://api.themoviedb.org/3/search/movie?api_key=' + tmdbApiKey + 
         '&language=en-US&query=' + searchTerm + '&include_adult=false')
         .then((res) => {
-            console.log(res);
+            movieData = res.data.results;
         })
         .catch((err) => {
             console.log(err, 'Error');
@@ -37,7 +44,7 @@ function searchDetails(movieID, movieName){
     
     axios.get('https://api.themoviedb.org/3/movie/' + movieID + '/credits?api_key=' + tmdbApiKey)
         .then((res) => {
-            console.log(res);
+            castData = res.data.cast;
         })
         .catch((err) => {
             console.log(err, 'Error');
@@ -51,7 +58,7 @@ function searchDetails(movieID, movieName){
         }
     })
         .then((res) => {
-            console.log(res);
+            quotesData = res.data;
         })
         .catch((err) => {
             console.log(err, 'Error');
