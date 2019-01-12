@@ -21,8 +21,6 @@ $(document).ready(() => {
  * @param {string} searchTerm 
  */
 function search(searchTerm){
-    let movieData = [];
-
     axios.get('https://api.themoviedb.org/3/search/movie?api_key=' + tmdbApiKey + 
         '&language=en-US&query=' + searchTerm + '&include_adult=false')
         .then((res) => {
@@ -39,9 +37,6 @@ function search(searchTerm){
  * @param {string} movieName 
  */
 function searchDetails(movieID, movieName){
-    let castData = [];
-    let quotesData = [];
-    
     axios.get('https://api.themoviedb.org/3/movie/' + movieID + '/credits?api_key=' + tmdbApiKey)
         .then((res) => {
             castData = res.data.cast;
