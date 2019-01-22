@@ -27,6 +27,23 @@ function search(searchTerm){
         '&language=en-US&query=' + searchTerm + '&include_adult=false')
         .then((res) => {
             movieData = res.data.results;
+
+            //create output template
+            let movieOutput = '';
+
+            movieData.forEach(movie => {
+              movieOutput += `
+                <div class="col-md-3">
+                  <div class="well text-center">
+                    <img src="https://image.tmdb.org/t/p/w600_and_h900_bestv2/${movie.poster_path}"/>
+                    <h5>${movie.original_title}</h5>
+                    <a onClick="selectedMovie('${movie.id}', '${sluggify(movie.original_title)}')"
+                     class="btn btn-primary" href="#">Details</a>
+                  </div>
+                </div>
+              `;
+            });
+            $('#results').html(movieOutput);
         })
         .catch((err) => {
             console.log(err, 'Error');
@@ -71,4 +88,40 @@ function searchDetails(movieID, movieName){
  */
 function sluggify(string){
     return string.replace(' ', '-').toLowerCase();
+}
+}
+
+/**
+ * Handles movie selection on the frontpage
+ * @param {int} movieID 
+ * @param {string} movieName 
+ */
+function selectedMovie(movieID, movieName){
+  sessionStorage.setItem('filmID', movieID);
+  sessionStorage.setItem('name', movieName);
+
+  window.location = 'movie.html';
+  return false;
+}
+
+/**
+ * Function that is triggered after window was relocated to movie.html
+ */
+function getDetails(){
+  let id = sessionStorage.getItem('filmID');
+  let name = sessionStorage.getItem('name');
+
+  searchDetails(id, name); 
+}
+
+/**
+ * Generates the template which is renderted on the details page
+ */
+function generateDetailOutput(){
+  let outputDetails = `
+    <div class="row">
+      <h1>Hello</h1>
+    </div>
+  `;
+  $('#result').html(outputDetails);
 }
