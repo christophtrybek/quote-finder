@@ -114,3 +114,14 @@ function getDetails(){
   searchDetails(id, name); 
 }
 
+/**
+ * Generates the template which is renderted on the details page
+ */
+function generateDetailOutput(){
+  let outputDetails = `
+    <div class="row">
+      <h1>Hello</h1>
+    </div>
+  `;
+  $('#result').html(outputDetails);
+}
