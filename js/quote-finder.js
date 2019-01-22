@@ -2,8 +2,10 @@
  * Global data source
  */
 let movieData = [];
+let movieDetail = {};
 let castData = [];
 let quotesData = [];
+let integratedObject = {};
 
 /**
  * Handle document input
@@ -21,8 +23,6 @@ $(document).ready(() => {
  * @param {string} searchTerm 
  */
 function search(searchTerm){
-    let movieData = [];
-
     axios.get('https://api.themoviedb.org/3/search/movie?api_key=' + tmdbApiKey + 
         '&language=en-US&query=' + searchTerm + '&include_adult=false')
         .then((res) => {
@@ -56,30 +56,28 @@ function search(searchTerm){
  * @param {string} movieName 
  */
 function searchDetails(movieID, movieName){
-    let castData = [];
-    let quotesData = [];
-    
-    axios.get('https://api.themoviedb.org/3/movie/' + movieID + '/credits?api_key=' + tmdbApiKey)
-        .then((res) => {
-            castData = res.data.cast;
-        })
-        .catch((err) => {
-            console.log(err, 'Error');
-        })
-    
-    axios({
+  axios.get('https://api.themoviedb.org/3/movie/' + movieID + '?api_key=' + tmdbApiKey)
+    .then((res) => {
+      movieDetail = res.data;
+      return axios.get('https://api.themoviedb.org/3/movie/' + movieID + '/credits?api_key=' + tmdbApiKey)
+    })
+    .then((res) => {
+      castData = res.data.cast;
+      return axios({
         method: 'get',
         url: 'http://movie-quotes-app.herokuapp.com/api/v1/quotes?movie=' + sluggify(movieName),
         headers: {
             Authorization: 'Token token=' + movieQuotesApiKey
         }
+      })
     })
-        .then((res) => {
-            quotesData = res.data;
-        })
-        .catch((err) => {
-            console.log(err, 'Error');
-        })    
+    .then((res) => {
+      quotesData = res.data;
+    })
+    .catch((err) => {
+      console.log(err, 'Error');
+    })
+
 }
 
 /**
@@ -88,7 +86,6 @@ function searchDetails(movieID, movieName){
  */
 function sluggify(string){
     return string.replace(' ', '-').toLowerCase();
-}
 }
 
 /**
