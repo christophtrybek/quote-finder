@@ -89,3 +89,28 @@ function searchDetails(movieID, movieName){
 function sluggify(string){
     return string.replace(' ', '-').toLowerCase();
 }
+}
+
+/**
+ * Handles movie selection on the frontpage
+ * @param {int} movieID 
+ * @param {string} movieName 
+ */
+function selectedMovie(movieID, movieName){
+  sessionStorage.setItem('filmID', movieID);
+  sessionStorage.setItem('name', movieName);
+
+  window.location = 'movie.html';
+  return false;
+}
+
+/**
+ * Function that is triggered after window was relocated to movie.html
+ */
+function getDetails(){
+  let id = sessionStorage.getItem('filmID');
+  let name = sessionStorage.getItem('name');
+
+  searchDetails(id, name); 
+}
+
