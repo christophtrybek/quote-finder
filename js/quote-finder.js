@@ -27,6 +27,23 @@ function search(searchTerm){
         '&language=en-US&query=' + searchTerm + '&include_adult=false')
         .then((res) => {
             movieData = res.data.results;
+
+            //create output template
+            let movieOutput = '';
+
+            movieData.forEach(movie => {
+              movieOutput += `
+                <div class="col-md-3">
+                  <div class="well text-center">
+                    <img src="https://image.tmdb.org/t/p/w600_and_h900_bestv2/${movie.poster_path}"/>
+                    <h5>${movie.original_title}</h5>
+                    <a onClick="selectedMovie('${movie.id}', '${sluggify(movie.original_title)}')"
+                     class="btn btn-primary" href="#">Details</a>
+                  </div>
+                </div>
+              `;
+            });
+            $('#results').html(movieOutput);
         })
         .catch((err) => {
             console.log(err, 'Error');
