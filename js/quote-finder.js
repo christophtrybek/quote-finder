@@ -112,25 +112,11 @@ function getDetails(){
   searchDetails(id, name); 
 }
 
-/**
- * Generates the template which is renderted on the details page
- */
-function generateDetailOutput(){
-  let outputDetails = `
-    <div class="row">
-      <h1>Hello</h1>
-    </div>
-  `;
-  $('#result').html(outputDetails);
-}
-
 /**  
  * Integrates the fetched data into one global schema
  */
 function integrateSchema(){
-  console.log('work');
   let movieList = [];
-  console.log(movieDetail);
   let actorsList = [];
   castData.forEach(member => {
       let quotesList = [];
@@ -144,6 +130,7 @@ function integrateSchema(){
   movieList.push({
     id: movieDetail.id,
     imdbid: movieDetail.imdb_id,
+    poster_path: movieDetail.poster_path, 
     genres: movieDetail.genres,
     collection: movieDetail.belongs_to_collection,
     budget: movieDetail.budget,
@@ -160,5 +147,88 @@ function integrateSchema(){
     vote_count: movieDetail.vote_count,
     actors: actorsList
   });
-  console.log(movieList);
+  generateDetailOutput(movieList[0]);
+}
+
+/**
+ * Generates the template which is renderted on the details page
+ */
+function generateDetailOutput(detailedObject){
+  let countries = '';
+  detailedObject.production_countries.forEach(country => {
+    countries += `
+      ${country.name}
+    `;
+  })
+
+  let genres = '';
+  detailedObject.genres.forEach(genre => {
+    genres += `
+      ${genre.name}
+    `;
+  })
+
+  let performer = '';
+  detailedObject.actors.forEach(actor => {
+    let sayings = '';
+    if(actor.quotes.length > 0){
+      actor.quotes.forEach(saying => {
+        sayings +=`
+          <p>${saying.quote} - ${saying.rating}<p>
+        `;
+      })
+    }
+    performer += `
+      <div>
+        <h5>${actor.character_name} played by ${actor.actor_name}</h5>
+        <div>
+          ${sayings}
+        </div>
+      </div>  
+    `;
+  })
+
+  let outputDetails = `
+    <div class="row">
+      <div class="col-md-4">
+        <img class="detail-image" src="https://image.tmdb.org/t/p/w600_and_h900_bestv2/${detailedObject.poster_path}"/>
+      </div>
+      <div class="col-md-8">
+        <h1>${detailedObject.original_title}</h1>
+        <h5><i>${detailedObject.tagline}</i></h5>
+        <ul class="list-group">
+          <li class="list-group-item"><b>Genres: </b>${genres}</li>
+          <li class="list-group-item"><b>Release: </b>${detailedObject.release}</li>
+          <li class="list-group-item"><b>Collection: </b>${detailedObject.collection.name}</li>
+          <li class="list-group-item"><b>Runtime: </b>${detailedObject.runtime} Days</li>
+          <li class="list-group-item"><b>Popularity: </b>${detailedObject.popularity}</li>
+          <li class="list-group-item"><b>Vote Average: </b>${detailedObject.vote_average}</li>
+          <li class="list-group-item"><b>Vote Count: </b>${detailedObject.vote_count}</li>
+          <li class="list-group-item"><b>Budget: </b>${detailedObject.budget}</li>
+          <li class="list-group-item"><b>Revenue: </b>${detailedObject.revenue}</li>
+          <li class="list-group-item"><b>Production Countries: </b>${countries}</li>
+        </ul>
+      </div>
+    </div>
+    <div class=row>
+      <div class="well">
+        <h4>Plot</h4>
+        <p>${detailedObject.overview}</p>
+      </div>
+    </div>
+    <div class=row>
+      <div class="well">
+        <h4>Quotes</h4>
+        <p>${performer}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="well">
+        <a class="btn btn-primary" href="https://www.imdb.com/title/${detailedObject.imdbid}/" 
+        target="_blank">Find me on IMDB</a>
+        <a class="btn btn-danger" href="index.html">Return to Search</a>
+      </div>
+    </div>
+  `;
+  $('#result').html(outputDetails);
 }
