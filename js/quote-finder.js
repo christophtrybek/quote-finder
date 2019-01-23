@@ -73,6 +73,7 @@ function searchDetails(movieID, movieName){
     })
     .then((res) => {
       quotesData = res.data;
+      integrateSchema();
     })
     .catch((err) => {
       console.log(err, 'Error');
@@ -121,4 +122,43 @@ function generateDetailOutput(){
     </div>
   `;
   $('#result').html(outputDetails);
+}
+
+/**  
+ * Integrates the fetched data into one global schema
+ */
+function integrateSchema(){
+  console.log('work');
+  let movieList = [];
+  console.log(movieDetail);
+  let actorsList = [];
+  castData.forEach(member => {
+      let quotesList = [];
+      quotesData.forEach(quote => {
+          if(member.character === quote.character.name){
+              quotesList.push({quote: quote.content, rating: quote.rating})
+          }
+      })
+      actorsList.push({actor_name: member.name, character_name: member.character, quotes: quotesList});
+  });
+  movieList.push({
+    id: movieDetail.id,
+    imdbid: movieDetail.imdb_id,
+    genres: movieDetail.genres,
+    collection: movieDetail.belongs_to_collection,
+    budget: movieDetail.budget,
+    overview: movieDetail.overview,
+    original_title: movieDetail.original_title,
+    tagline: movieDetail.tagline,
+    release: movieDetail.release_date,
+    budget: movieDetail.budget,
+    revenue: movieDetail.revenue,
+    runtime: movieDetail.runtime,
+    production_countries: movieDetail.production_countries,
+    popularity: movieDetail.popularity,
+    vote_average: movieDetail.vote_average,
+    vote_count: movieDetail.vote_count,
+    actors: actorsList
+  });
+  console.log(movieList);
 }
