@@ -73,6 +73,7 @@ function searchDetails(movieID, movieName){
     })
     .then((res) => {
       quotesData = res.data;
+      console.log(quotesData);
       integrateSchema();
     })
     .catch((err) => {
@@ -122,7 +123,8 @@ function integrateSchema(){
   castData.forEach(member => {
       let quotesList = [];
       quotesData.forEach(quote => {
-          if(member.character === quote.character.name && release_year === quote.year.toString()){
+          if((member.character === quote.character.name || member.name === quote.actor.name) 
+          && release_year === quote.year.toString()){
               quotesList.push({quote: quote.content, rating: quote.rating})
           }
       })
@@ -175,16 +177,18 @@ function generateDetailOutput(detailedObject){
     if(actor.quotes.length > 0){
       actor.quotes.forEach(saying => {
         sayings +=`
-          <p>${saying.quote} - ${saying.rating}<p>
+          <p><i>"${saying.quote}</i>" - ${saying.rating}*<p>
         `;
       })
     }
     performer += `
       <div>
-        <h5>${actor.character_name} played by ${actor.actor_name}</h5>
+        <h5>${actor.character_name}</h5>
+        <p>(${actor.actor_name})</p>
         <div>
           ${sayings}
         </div>
+        <hr/>
       </div>  
     `;
   })
@@ -200,13 +204,12 @@ function generateDetailOutput(detailedObject){
         <ul class="list-group">
           <li class="list-group-item"><b>Genres: </b>${genres}</li>
           <li class="list-group-item"><b>Release: </b>${detailedObject.release}</li>
-          <li class="list-group-item"><b>Collection: </b>${detailedObject.collection.name}</li>
           <li class="list-group-item"><b>Runtime: </b>${detailedObject.runtime} Days</li>
           <li class="list-group-item"><b>Popularity: </b>${detailedObject.popularity}</li>
           <li class="list-group-item"><b>Vote Average: </b>${detailedObject.vote_average}</li>
           <li class="list-group-item"><b>Vote Count: </b>${detailedObject.vote_count}</li>
-          <li class="list-group-item"><b>Budget: </b>${detailedObject.budget}</li>
-          <li class="list-group-item"><b>Revenue: </b>${detailedObject.revenue}</li>
+          <li class="list-group-item"><b>Budget: </b>${detailedObject.budget}$</li>
+          <li class="list-group-item"><b>Revenue: </b>${detailedObject.revenue}$</li>
           <li class="list-group-item"><b>Production Countries: </b>${countries}</li>
         </ul>
       </div>
