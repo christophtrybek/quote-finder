@@ -230,7 +230,7 @@ function generateDetailOutput(detailedObject){
       <div class="well">
         <a class="btn btn-primary" href="https://www.imdb.com/title/${detailedObject.imdbid}/" 
         target="_blank">Find me on IMDB</a>
-        <a class="btn btn-danger" href="index.html">Return to Search</a>
+        <a class="btn btn-danger" href="quote-finder.html">Return to Search</a>
       </div>
     </div>
   `;
