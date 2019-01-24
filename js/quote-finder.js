@@ -34,8 +34,9 @@ function search(searchTerm){
             movieData.forEach(movie => {
               movieOutput += `
                 <div class="col-md-3">
-                  <div class="well text-center">
-                    <img src="https://image.tmdb.org/t/p/w600_and_h900_bestv2/${movie.poster_path}"/>
+                  <div class="well text-center spacing">
+                    <img onClick="selectedMovie('${movie.id}', '${sluggify(movie.original_title)}')"
+                     src="https://image.tmdb.org/t/p/w600_and_h900_bestv2/${movie.poster_path}"/>
                     <h5>${movie.original_title}</h5>
                     <a onClick="selectedMovie('${movie.id}', '${sluggify(movie.original_title)}')"
                      class="btn btn-primary" href="#">Details</a>
@@ -177,7 +178,11 @@ function generateDetailOutput(detailedObject){
     if(actor.quotes.length > 0){
       actor.quotes.forEach(saying => {
         sayings +=`
-          <p><i>"${saying.quote}</i>" - ${saying.rating}*<p>
+          <div class="quotation-style">
+            <i>"${saying.quote}</i>"
+            <br/>
+            ${saying.rating}*
+          </div>
         `;
       })
     }
@@ -195,12 +200,18 @@ function generateDetailOutput(detailedObject){
 
   let outputDetails = `
     <div class="row">
-      <div class="col-md-4">
-        <img class="detail-image" src="https://image.tmdb.org/t/p/w600_and_h900_bestv2/${detailedObject.poster_path}"/>
-      </div>
       <div class="col-md-8">
         <h1>${detailedObject.original_title}</h1>
         <h5><i>${detailedObject.tagline}</i></h5>
+      </div>
+    </div>
+    <div class="row detail-summary">
+      <div class="col-md-4">
+        <hr/>
+        <img class="detail-image" src="https://image.tmdb.org/t/p/w600_and_h900_bestv2/${detailedObject.poster_path}"/>
+        <hr/>
+        <h4>Plot</h4>
+        <p>${detailedObject.overview}</p>
         <ul class="list-group">
           <li class="list-group-item"><b>Genres: </b>${genres}</li>
           <li class="list-group-item"><b>Release: </b>${detailedObject.release}</li>
@@ -212,25 +223,21 @@ function generateDetailOutput(detailedObject){
           <li class="list-group-item"><b>Revenue: </b>${detailedObject.revenue}$</li>
           <li class="list-group-item"><b>Production Countries: </b>${countries}</li>
         </ul>
+        <div class="button-group return-button">
+          <a class="btn btn-primary" href="https://www.imdb.com/title/${detailedObject.imdbid}/" 
+            target="_blank">Find me on IMDB</a>
+          <a class="btn btn-danger" href="quote-finder.html">Return to Search</a>
+        </div>
       </div>
-    </div>
-    <div class=row>
-      <div class="well">
-        <h4>Plot</h4>
-        <p>${detailedObject.overview}</p>
-      </div>
-    </div>
-    <div class=row>
-      <div class="well">
-        <h4>Quotes</h4>
+      <div class="col-md-8">
+        <h4>Starring</h4>
         <p>${performer}</p>
       </div>
     </div>
-    <div class="row">
-      <div class="well">
-        <a class="btn btn-primary" href="https://www.imdb.com/title/${detailedObject.imdbid}/" 
-        target="_blank">Find me on IMDB</a>
-        <a class="btn btn-danger" href="quote-finder.html">Return to Search</a>
+    <div class=row>
+      <div class="col-md-4">
+      </div>
+      <div class="col-md-8">
       </div>
     </div>
   `;
