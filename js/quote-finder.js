@@ -118,10 +118,11 @@ function getDetails(){
 function integrateSchema(){
   let movieList = [];
   let actorsList = [];
+  let release_year = movieDetail.release_date.substring(0,4);
   castData.forEach(member => {
       let quotesList = [];
       quotesData.forEach(quote => {
-          if(member.character === quote.character.name){
+          if(member.character === quote.character.name && release_year === quote.year.toString()){
               quotesList.push({quote: quote.content, rating: quote.rating})
           }
       })
