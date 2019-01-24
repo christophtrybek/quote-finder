@@ -192,7 +192,7 @@ function generateDetailOutput(detailedObject){
           <div class="quotation-style">
             <i>"${saying.quote}</i>"
             <br/>
-            ${saying.rating}*
+            <i class="fas fa-star"></i> ${saying.rating}
           </div>
         `;
       })
