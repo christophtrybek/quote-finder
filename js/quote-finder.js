@@ -92,6 +92,17 @@ function sluggify(string){
 }
 
 /**
+ * Transforms the datestring into the german format
+ * @param {string} datestring
+ */
+function changeDate(datestring){
+  let year = datestring.substring(0,4);
+  let month = datestring.substring(5,7);
+  let day = datestring.substr(8,9);
+  return (day+'.'+month+'.'+year);
+}
+
+/**
  * Handles movie selection on the frontpage
  * @param {int} movieID 
  * @param {string} movieName 
@@ -141,7 +152,7 @@ function integrateSchema(){
     overview: movieDetail.overview,
     original_title: movieDetail.original_title,
     tagline: movieDetail.tagline,
-    release: movieDetail.release_date,
+    release: changeDate(movieDetail.release_date),
     budget: movieDetail.budget,
     revenue: movieDetail.revenue,
     runtime: movieDetail.runtime,
